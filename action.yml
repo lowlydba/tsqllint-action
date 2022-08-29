@@ -28,7 +28,7 @@ runs:
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
+        sudo tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
       shell: bash
 
     - name: Show results
