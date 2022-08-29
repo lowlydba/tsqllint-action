@@ -28,7 +28,7 @@ runs:
 
     - name: Run TSQLLint
       run: |
-        tsqllint -p -c "${{ inputs.config }}"
+        tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
       shell: bash
 
