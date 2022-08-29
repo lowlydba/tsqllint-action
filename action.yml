@@ -37,9 +37,10 @@ runs:
       run: |
         warnings=`cat .tsqllint-output | tail -1`
         errors=`cat .tsqllint-output | tail -2 | head -1`
-        if [[ ${warnings:0:1} == "0" && ${errors:0:1} == "0" ]]; then status=":white_check_mark:"; else status=":x:"; fi
+        if [[ ${warnings:0:1} == "0" && ${errors:0:1} == "0" || $warnings == "running tsqllint"]]; then clean="true"; else clean="false"; fi
+        if [[ $clean == "true" ]]; then status=":white_check_mark:"; else status=":x:"; fi
         echo -e "## $status TSQLLint Summary\n" >> .tsqllint-output.final
-        cat .tsqllint-output | tail -4 >> .tsqllint-output.final
+        if [[ $clean != "true" ]]; then cat .tsqllint-output | tail -4 >> .tsqllint-output.final; else echo "No issues found." >> .tsqllint-output.final; fi
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
         echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
         echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
