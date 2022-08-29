@@ -8,7 +8,7 @@ inputs:
   path:
     description: "Space delimited path(s) to run linter against. Wildcards can be specified using `*`."
     required: false
-    default: "*.sql"
+    default: "."
   config:
     description: "Path to a configuration file for the linter."
     required: false
@@ -23,20 +23,14 @@ runs:
       run: |
         DEBIAN_FRONTEND=noninteractive && \
         sudo apt-get -qq update && \
-        sudo apt-get -qq install libunwind8  && \
+      #  sudo apt-get -qq install libunwind8  && \
         yarn global add tsqllint > /dev/null 2>&1
       shell: bash
 
     - name: Run TSQLLint
       run: |
-        if [ -z ${{ inputs.config }} ]
-          then
-            echo "No config file found, using defaults."
-            tsqllint ${{ inputs.path }} > .tsqllint-output
-          else
-            echo "Using config file at ${{ inputs.config }}"
-            tsqllint ${{ inputs.path }} -c ${{ inputs.config }} > .tsqllint-output
-        fi
+        tsqllint -p -c "${{ inputs.config }}"
+        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
       shell: bash
 
     - name: Show results
@@ -54,7 +48,7 @@ runs:
         cat .tsqllint-output | tail -4 >> .tsqllint-output.final
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
         echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
-        echo -e "\n:recycle: This comment has been updated with latest results." >> .coverage-output.final
+        echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
       shell: bash
 
       #https://github.com/lowlydba/dba-multitool/runs/8052423233?check_suite_focus=true
