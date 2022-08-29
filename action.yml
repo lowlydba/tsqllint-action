@@ -34,7 +34,7 @@ runs:
         echo "tsqllint_rc=$tsqllint_rc" >> $GITHUB_ENV
         # Parse results
         cat .tsqllint-output
-      shell: bash -e {0}
+      shell: bash {0}
 
     - name: Parse results
       run: |
@@ -50,7 +50,7 @@ runs:
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
         echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
         echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
-      shell: bash -e {0}
+      shell: bash
 
     - name: Post as comment
       if: contains(inputs.comment, 'true')
