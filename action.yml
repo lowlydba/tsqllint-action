@@ -28,25 +28,25 @@ runs:
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > $RUNNER_TEMP/.tsqllint-output
-        cat $RUNNER_TEMP/.tsqllint-output
+        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output || true
+        cat .tsqllint-output
       shell: bash
 
     - name: Generate comment
       if: contains(inputs.comment, 'true')
       run: |
-        warnings=`cat $RUNNER_TEMP/.tsqllint-output | tail -1`
-        errors=`cat $RUNNER_TEMP/.tsqllint-output | tail -2 | head -1`
+        warnings=`cat .tsqllint-output | tail -1`
+        errors=`cat .tsqllint-output | tail -2 | head -1`
         if [[ ${warnings:0:1} == "0" && ${errors:0:1} == "0" ]]; then status=":white_check_mark:"; else status=":x:"; fi
-        echo -e "## $status TSQLLint Summary\n" >> $RUNNER_TEMP/.tsqllint-output.final
-        cat $RUNNER_TEMP/.tsqllint-output | tail -4 >> $RUNNER_TEMP/.tsqllint-output.final
-        echo -e "\nResults for commit ${{ github.sha }}." >> $RUNNER_TEMP/.tsqllint-output.final
-        echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> $RUNNER_TEMP/.tsqllint-output.final
-        echo -e "\n:recycle: This comment has been updated with latest results." >> $RUNNER_TEMP/.tsqllint-output.final
+        echo -e "## $status TSQLLint Summary\n" >> .tsqllint-output.final
+        cat .tsqllint-output | tail -4 >> .tsqllint-output.final
+        echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
+        echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
+        echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
       shell: bash
 
     - name: Post as comment
       if: contains(inputs.comment, 'true')
       uses: marocchino/sticky-pull-request-comment@v2
       with:
-        path: $RUNNER_TEMP/.tsqllint-output.final
+        path: .tsqllint-output.final
