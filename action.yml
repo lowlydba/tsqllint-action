@@ -22,15 +22,13 @@ runs:
     - name: Install TSQLLint
       run: |
         yarn global add tsqllint > /dev/null 2>&1
-      shell: bash
 
     - name: Run TSQLLint
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output || true
+        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
         cat .tsqllint-output
-      shell: bash
 
     - name: Generate comment
       if: contains(inputs.comment, 'true')
@@ -44,7 +42,6 @@ runs:
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
         echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
         echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
-      shell: bash
 
     - name: Post as comment
       if: contains(inputs.comment, 'true')
