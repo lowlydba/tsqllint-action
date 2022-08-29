@@ -21,8 +21,6 @@ runs:
   steps:
     - name: Install TSQLLint
       run: |
-        DEBIAN_FRONTEND=noninteractive && \
-        sudo apt-get -qq update && \
         yarn global add tsqllint > /dev/null 2>&1
       shell: bash
 
