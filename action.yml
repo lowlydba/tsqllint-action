@@ -22,25 +22,30 @@ runs:
     - name: Install TSQLLint
       run: |
         yarn global add tsqllint > /dev/null 2>&1
-      shell: bash -e {0}
+      shell: bash
 
     - name: Run TSQLLint
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output || true
+        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
+        # Save return code status
+        tsqllint_rc=$?
+        echo "tsqllint_rc=$tsqllint_rc" >> $GITHUB_ENV
+        # Parse results
         cat .tsqllint-output
-      shell: bash -e {0}
-
-    - name: Generate comment
-      if: contains(inputs.comment, 'true')
-      run: |
         warnings=`cat .tsqllint-output | tail -1`
         errors=`cat .tsqllint-output | tail -2 | head -1`
-        if [[ ${warnings:0:1} == "0" && ${errors:0:1} == "0" ]] || [ $warnings == "running tsqllint"]; then clean="true"; else clean="false"; fi
-        if [[ $clean == "true" ]]; then status=":white_check_mark:"; else status=":x:"; fi
+        if [[ $tsqllint_rc == 0 ]];
+          then status=":white_check_mark:";
+          else status=":x:";
+        fi
+        # Build comment
         echo -e "## $status TSQLLint Summary\n" >> .tsqllint-output.final
-        if [[ $clean != "true" ]]; then cat .tsqllint-output | tail -4 >> .tsqllint-output.final; else echo "No issues found." >> .tsqllint-output.final; fi
+        if [[ $tsqllint_rc == 1 ]];
+          then cat .tsqllint-output | tail -4 >> .tsqllint-output.final;
+          else echo "No issues found." >> .tsqllint-output.final;
+        fi
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
         echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
         echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
@@ -51,3 +56,8 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2
       with:
         path: .tsqllint-output.final
+
+    - name: Set final status
+      if: contains(env.tsqllint_rc, 1)
+      run: exit 1
+      shell: bash
