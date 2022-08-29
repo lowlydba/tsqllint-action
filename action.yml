@@ -23,7 +23,6 @@ runs:
       run: |
         DEBIAN_FRONTEND=noninteractive && \
         sudo apt-get -qq update && \
-      #  sudo apt-get -qq install libunwind8  && \
         yarn global add tsqllint > /dev/null 2>&1
       shell: bash
 
