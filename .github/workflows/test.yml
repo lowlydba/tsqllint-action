@@ -1,0 +1,24 @@
+---
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
+name: Lint Code
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: Lint Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3.0.2
+
+      - name: TSQLLint
+        uses: ./.github/actions/sqlcover
+        with:
+          path: "test/*.sql"
