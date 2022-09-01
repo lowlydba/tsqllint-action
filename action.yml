@@ -48,7 +48,6 @@ runs:
         echo -e "## $status TSQLLint Summary\n" >> .tsqllint-output.final
         echo -e "$summary" >> .tsqllint-output.final
         echo -e "\nResults for commit ${{ github.sha }}." >> .tsqllint-output.final
-        echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
         echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
       shell: bash
 
