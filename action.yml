@@ -52,7 +52,7 @@ runs:
       shell: bash
 
     - name: Post as comment
-      if: contains(inputs.comment, 'true') && github.GITHUB_EVENT_NAME == 'pull_request'
+      if: contains(inputs.comment, 'true')
       uses: marocchino/sticky-pull-request-comment@v2
       with:
         path: .tsqllint-output.final
