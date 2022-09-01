@@ -33,9 +33,10 @@ runs:
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
         if [ "${{ inputs.only_changed_files }}" == "true" ]
-          then tsqllint "$(git diff --diff-filter=M --name-only HEAD | grep -E '\.(sql)$' | xargs)" -c "${{ inputs.config }}" > .tsqllint-output;
-          else tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output;
+          then files=`git diff --diff-filter=M --name-only HEAD | grep -E '\.(yml|md)$'`;
+          else files=`echo "${{ inputs.path }}"`;
         fi
+        tsqllint $files -c "${{ inputs.config }}" > .tsqllint-output;
         # Save return code status
         tsqllint_rc=$?
         echo "tsqllint_rc=$tsqllint_rc" >> $GITHUB_ENV
