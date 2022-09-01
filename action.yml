@@ -24,7 +24,7 @@ runs:
         yarn global add tsqllint > /dev/null 2>&1
       shell: bash
 
-    - name: Run TSQLLint
+    - name: Run TSQLLints
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
