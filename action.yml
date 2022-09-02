@@ -33,11 +33,10 @@ runs:
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
         if [ "${{ inputs.only_changed_files }}" == "true" ]
-          then files=`git diff --diff-filter=M --name-only HEAD | grep -E '\.(sql)$'`;
+          then files=`git diff --diff-filter=M --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | grep -E '\.(sql)$'`;
           else files=`echo "${{ inputs.path }}"`;
         fi
         echo $files
-        git diff --diff-filter=M --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | grep -E '\.(sql)$'
         tsqllint $files -c "${{ inputs.config }}" > .tsqllint-output;
         # Save return code status
         tsqllint_rc=$?
