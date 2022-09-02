@@ -36,6 +36,8 @@ runs:
           then files=`git diff --diff-filter=M --name-only HEAD | grep -E '\.(sql)$'`;
           else files=`echo "${{ inputs.path }}"`;
         fi
+        echo $files
+        git diff --diff-filter=M --name-only HEAD | grep -E '\.(sql)$'
         tsqllint $files -c "${{ inputs.config }}" > .tsqllint-output;
         # Save return code status
         tsqllint_rc=$?
