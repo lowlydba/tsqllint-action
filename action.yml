@@ -32,7 +32,7 @@ runs:
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        if [ "${{ inputs.only_changed_files }}" == "true" ] && [ $GITHUB_HEAD_REF != "" ]
+        if [ "${{ inputs.only_changed_files }}" == "true" ] && [ "$GITHUB_HEAD_REF" != "" ]
           then files=`git diff --diff-filter=M --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | grep -E '\.(sql)$'`;
           else files=`echo "${{ inputs.path }}"`;
         fi
