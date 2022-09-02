@@ -33,7 +33,7 @@ runs:
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
         if [ "${{ inputs.only_changed_files }}" == "true" ]
-          then files=`git diff --diff-filter=M --name-only HEAD | grep -E '\.(yml|md)$'`;
+          then files=`git diff --diff-filter=M --name-only HEAD | grep -E '\.(sql)$'`;
           else files=`echo "${{ inputs.path }}"`;
         fi
         tsqllint $files -c "${{ inputs.config }}" > .tsqllint-output;
