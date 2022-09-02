@@ -17,7 +17,7 @@ inputs:
     required: false
     default: "false"
   only_changed_files:
-    description: "Only lint on modified `.sql` files. Will ignore `path` if `true`."
+    description: "Only lint on modified `.sql` files. Will ignore `path` if `true` in pull requests, or default back to `path` if not in a pull request."
     required: false
     default: "false"
 runs:
@@ -32,7 +32,7 @@ runs:
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        if [ "${{ inputs.only_changed_files }}" == "true" ]
+        if [ "${{ inputs.only_changed_files }}" == "true" ] && [ $GITHUB_HEAD_REF != "" ]
           then files=`git diff --diff-filter=M --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | grep -E '\.(sql)$'`;
           else files=`echo "${{ inputs.path }}"`;
         fi
