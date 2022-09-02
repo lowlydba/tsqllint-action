@@ -16,6 +16,10 @@ inputs:
     description: "Create comment with summary of linter results."
     required: false
     default: "false"
+  only_changed_files:
+    description: "Only lint on modified `.sql` files. Will ignore `path` if `true` in pull requests, or default back to `path` if not in a pull request."
+    required: false
+    default: "false"
 runs:
   using: composite
   steps:
@@ -28,7 +32,11 @@ runs:
       run: |
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
-        tsqllint "${{ inputs.path }}" -c "${{ inputs.config }}" > .tsqllint-output
+        if [ "${{ inputs.only_changed_files }}" == "true" ] && [ $GITHUB_HEAD_REF != "" ]
+          then files=`git diff --diff-filter=M --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | grep -E '\.(sql)$'`;
+          else files=`echo "${{ inputs.path }}"`;
+        fi
+        tsqllint $files -c "${{ inputs.config }}" > .tsqllint-output;
         # Save return code status
         tsqllint_rc=$?
         echo "tsqllint_rc=$tsqllint_rc" >> $GITHUB_ENV

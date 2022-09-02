@@ -19,7 +19,7 @@ for the linter.
 
 **Optional** - Create comment with summary of linter results.
 
-## Example
+## Examples
 
 ```yml
 jobs:
