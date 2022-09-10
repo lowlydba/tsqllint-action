@@ -41,6 +41,8 @@ else {
 
 $tsqllint_rc = $LASTEXITCODE
 "tsqllint_rc=$tsqllint_rc" >> $env:GITHUB_ENV
+
+# Results
 Get-Content -Path .tsqllint-output
 
 $fullSummary = Get-Content .tsqllint-output | Select-Object -Last 4

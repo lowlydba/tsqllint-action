@@ -28,7 +28,7 @@ runs:
         npm i -g tsqllint | Out-Null
       shell: pwsh
 
-    - name: Run TSQLLint
+    - name: "Run TSQLLint"
       run: |
         $params = @{
           Config = "${{ inputs.config }}"
@@ -39,7 +39,7 @@ runs:
       shell: pwsh
 
     - name: Post as comment
-      if: contains(inputs.comment, 'true') && github.event.number != 0
+      if: contains(inputs.comment, 'true')
       uses: marocchino/sticky-pull-request-comment@v2
       with:
         path: .tsqllint-output.final

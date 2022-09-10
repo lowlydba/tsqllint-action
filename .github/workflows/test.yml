@@ -2,7 +2,7 @@ on: [push]
 
 jobs:
   pass:
-    name: Test Fail
+    name: Test Pass
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -20,7 +20,7 @@ jobs:
           only_changed_files: false
 
   fail:
-    name: Test Pass
+    name: Test Fail
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
