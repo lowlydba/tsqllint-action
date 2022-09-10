@@ -1,0 +1,43 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  pass:
+    name: Test Pass
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Pass
+        uses: ./
+        with:
+          path: "./tests/pass.sql"
+          comment: true
+          only_changed_files: false
+
+  fail:
+    name: Test Fail
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Fail
+        uses: ./
+        with:
+          path: "./tests/error.sql"
+          comment: true
+          only_changed_files: false
+        continue-on-error: true

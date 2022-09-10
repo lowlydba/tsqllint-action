@@ -38,3 +38,7 @@ jobs:
           config: "./.github/linter-conf/.tsqllintrc_150"
           comment: true
 ```
+
+## Notes
+
+* For pull request comments to work, the job must be triggered by a pull request event type
