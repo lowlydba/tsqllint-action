@@ -47,11 +47,7 @@ $tsqllint_rc = $LASTEXITCODE
 
 # Results
 Get-Content -Path .tsqllint-output
-
-$fullSummary = Get-Content .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
-#$IssueCounts = $Summary | Select-Object -Last 2
-#[int]$WarningCount = ($IssueCount | Select-Object -Last 1).Split(" ")[0]
-#[int]$ErrorCount = ($IssueCount | Select-Object First 1).Split(" ")[0]
+$fullSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
 
 if ($tsqllint_rc -eq 1) {
     $status = ":x:"
@@ -63,5 +59,3 @@ if ($tsqllint_rc -eq 1) {
 "`n$summary" | Out-File $commentFile -Append
 "`n[Detailed results.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
-
-exit 0
