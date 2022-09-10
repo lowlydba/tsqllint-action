@@ -20,13 +20,13 @@ $versionCommand = "tsqllint -v"
 $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Host "==================================="
-Write-Host ":star: TSQLLint Action :star:"
-Write-Host $ConfigSetting -ForegroundColor Blue
+Write-Host "⭐ TSQLLint Action ⭐"
+Write-Host $ConfigSetting
 
 # Show version
 $versionSetting = Invoke-Expression -Command $versionCommand
 $versionSetting = $versionSetting | Select-Object -Last 1
-Write-Host $versionSetting -ForegroundColor Blue
+Write-Host $versionSetting
 Write-Host "==================================="
 
 # Target changed files
