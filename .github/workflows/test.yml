@@ -2,7 +2,7 @@ on: [push]
 
 jobs:
   test-everywhere:
-    name: Test Action on all platforms and versions
+    name: Test Action
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -31,3 +31,4 @@ jobs:
         if: failure()
         run: exit 0
         shell: pwsh
+        continue-on-error: true
