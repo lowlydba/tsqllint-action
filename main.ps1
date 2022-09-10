@@ -57,8 +57,8 @@ if ($tsqllint_rc -eq 1) {
 
 # Build comment
 "## $status TSQLLint Summary" | Out-File $commentFile
-"\n$summary" | Out-File $commentFile -Append
-"\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $commentFile -Append
-"\n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
+"$summary" | Out-File $commentFile -Append
+"[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $commentFile -Append
+":recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
 exit 0
