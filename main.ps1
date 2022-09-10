@@ -8,8 +8,18 @@ $CommentFile = ".tsqllint-output.final"
 $status = ":white_check_mark:"
 $summary = "No issues found."
 
-tsqllint -p -c $Config | Select-Object -Last 1
+# Show config settings
+if ($Config) {
+    $ConfigSetting = tsqllint -p -c $Config
+}
+else {
+    $ConfigSetting = tsqllint -p
+}
+Write-Host $ConfigSetting | Select-Object -Last 1
+
+# Show version
 tsqllint -v | Select-Object -Last 1
+
 if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
     $files = git diff --diff-filter=MA --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | Select-String -Pattern ".sql"
 }
