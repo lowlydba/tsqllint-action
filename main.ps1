@@ -59,5 +59,4 @@ if ($tsqllint_rc -eq 1) {
 "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "\n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
-Get-Content $commentFile
 exit 0

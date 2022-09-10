@@ -1,8 +1,8 @@
 on: [push]
 
 jobs:
-  test-everywhere:
-    name: Test Action
+  pass:
+    name: Test Fail
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -18,6 +18,17 @@ jobs:
           path: "./tests/pass.sql"
           comment: true
           only_changed_files: false
+
+  fail:
+    name: Test Pass
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3.0.2
 
       - name: Fail
         uses: ./
