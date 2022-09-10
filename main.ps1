@@ -4,25 +4,25 @@ param(
     [string]$OnlyChangedFiles,
     [string]$Path
 )
-$CommentFile = ".tsqllint-output.final"
+$commentFile = ".tsqllint-output.final"
 $status = ":white_check_mark:"
 $summary = "No issues found."
-$BaseCommand = "tsqllint"
+$baseCommand = "tsqllint"
 if ($Config) {
-    $BaseCommand = $BaseCommand + " -c $Config"
+    $baseCommand = $baseCommand + " -c $Config"
 }
-$ConfigCommand = $BaseCommand + " -p"
-$VersionCommand = "tsqllint -v"
+$configCommand = $baseCommand + " -p"
+$versionCommand = "tsqllint -v"
 
 # Show config
-$ConfigSetting = Invoke-Expression -Command $ConfigCommand
+$ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Host $ConfigSetting
 
 # Show version
-$VersionSetting = Invoke-Expression -Command $VersionCommand
-$VersionSetting = $VersionSetting | Select-Object -Last 1
-Write-Host $VersionSetting
+$versionSetting = Invoke-Expression -Command $versionCommand
+$versionSetting = $versionSetting | Select-Object -Last 1
+Write-Host $versionSetting
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
@@ -43,20 +43,21 @@ $tsqllint_rc = $LASTEXITCODE
 "tsqllint_rc=$tsqllint_rc" >> $env:GITHUB_ENV
 Get-Content -Path .tsqllint-output
 
-$FullSummary = Get-Content .tsqllint-output | Select-Object -Last 4
+$fullSummary = Get-Content .tsqllint-output | Select-Object -Last 4
 #$IssueCounts = $Summary | Select-Object -Last 2
 #[int]$WarningCount = ($IssueCount | Select-Object -Last 1).Split(" ")[0]
 #[int]$ErrorCount = ($IssueCount | Select-Object First 1).Split(" ")[0]
 
 if ($tsqllint_rc -eq 1) {
     $status = ":x:"
-    $summary = $FullSummary
+    $summary = $fullSummary
 }
 
 # Build comment
-"## $status TSQLLint Summary" | Out-File $CommentFile
-"\n$summary" | Out-File $CommentFile -Append
-"\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $CommentFile -Append
-"\n:recycle: This comment has been updated with latest results." | Out-File $CommentFile -Append
+"## $status TSQLLint Summary" | Out-File $commentFile
+"\n$summary" | Out-File $commentFile -Append
+"\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $commentFile -Append
+"\n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
+Get-Content $commentFile
 exit 0
