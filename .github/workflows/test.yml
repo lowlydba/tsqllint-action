@@ -26,9 +26,3 @@ jobs:
           comment: true
           only_changed_files: false
         continue-on-error: true
-
-      - name: Assert lint fail
-        if: success() || failure()
-        run: exit 0
-        shell: pwsh
-        continue-on-error: true
