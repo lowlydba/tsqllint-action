@@ -25,8 +25,8 @@ $versionSetting = $versionSetting | Select-Object -Last 1
 Write-Host $versionSetting
 
 # Target changed files
-if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
-    $files = git diff --diff-filter=MA --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | Select-String -Pattern ".sql"
+if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_READ_REF -ne "" ) {
+    $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql"
 }
 else {
     $files = $Path
@@ -61,7 +61,7 @@ if ($tsqllint_rc -eq 1) {
 # Build comment
 "## $status TSQLLint Summary" | Out-File $commentFile
 "`n$summary" | Out-File $commentFile -Append
-"`n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" | Out-File $commentFile -Append
+"`n[Detailed results.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
 exit 0
