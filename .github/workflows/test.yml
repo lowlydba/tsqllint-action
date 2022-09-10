@@ -19,9 +19,15 @@ jobs:
           comment: true
           only_changed_files: false
 
-      # - name: Fail linting
-      #   uses: ./
-      #   with:
-      #     path: "./tests/error.sql"
-      #     comment: true
-      #     only_changed_files: false
+      - name: Fail linting
+        uses: ./
+        with:
+          path: "./tests/error.sql"
+          comment: true
+          only_changed_files: false
+        continue-on-error: true
+
+      - name: Assert lint fail
+        if: ${{ failure() }}
+        run: exit 0
+        shell: pwsh
