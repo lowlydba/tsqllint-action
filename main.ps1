@@ -32,6 +32,9 @@ else {
     $files = $Path
 }
 
+# Quote filenames
+$files = $('"' + ($files -join '" "') + '"')
+
 if ($Config) {
     tsqllint $files -c $Config | Out-File .tsqllint-output
 }
