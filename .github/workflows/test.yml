@@ -15,6 +15,6 @@ jobs:
       - name: Run the action
         uses: ./
         with:
-          path: "tests/pass.sql"
+          path: "."
           comment: true
           only_changed_files: false

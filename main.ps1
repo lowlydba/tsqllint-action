@@ -7,19 +7,22 @@ param(
 $CommentFile = ".tsqllint-output.final"
 $status = ":white_check_mark:"
 $summary = "No issues found."
-
-# Show config settings
+$BaseCommand = "tsqllint"
 if ($Config) {
-    $ConfigSetting = tsqllint -p -c $Config
+    $BaseCommand = $BaseCommand + " -c $Config"
 }
-else {
-    $ConfigSetting = tsqllint -p
-}
+$ConfigCommand = $BaseCommand + " -p"
+$VersionCommand = "tsqllint -v"
+
+# Show config
+$ConfigSetting = Invoke-Expression -Command $ConfigCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Host $ConfigSetting
 
 # Show version
-tsqllint -v | Select-Object -Last 1
+$VersionSetting = Invoke-Expression -Command $VersionCommand
+$VersionSetting = $VersionSetting | Select-Object -Last 1
+Write-Host $VersionSetting
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
@@ -28,7 +31,14 @@ if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
 else {
     $files = $Path
 }
-tsqllint $files -c $Config | Out-File .tsqllint-output
+
+if ($Config) {
+    tsqllint $files -c $Config | Out-File .tsqllint-output
+}
+else {
+    tsqllint $files | Out-File .tsqllint-output
+}
+
 $tsqllint_rc = $LASTEXITCODE
 "tsqllint_rc=$tsqllint_rc" >> $env:GITHUB_ENV
 Get-Content -Path .tsqllint-output
