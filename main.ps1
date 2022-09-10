@@ -48,7 +48,7 @@ $tsqllint_rc = $LASTEXITCODE
 # Results
 Get-Content -Path .tsqllint-output
 
-$fullSummary = Get-Content .tsqllint-output | Select-Object -Last 4
+$fullSummary = Get-Content .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
 #$IssueCounts = $Summary | Select-Object -Last 2
 #[int]$WarningCount = ($IssueCount | Select-Object -Last 1).Split(" ")[0]
 #[int]$ErrorCount = ($IssueCount | Select-Object First 1).Split(" ")[0]
