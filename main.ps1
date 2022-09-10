@@ -1,7 +1,7 @@
 param(
     [Parameter()]
     [string]$Config,
-    [bool]$OnlyChangedFiles,
+    [string]$OnlyChangedFiles,
     [string]$Path
 )
 $CommentFile = ".tsqllint-output.final"
@@ -10,7 +10,7 @@ $summary = "No issues found."
 
 tsqllint -p -c $Config | Select-Object -Last 1
 tsqllint -v | Select-Object -Last 1
-if ($OnlyChangedFiles -and $GITHUB_READ_REF -ne "" ) {
+if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
     $files = git diff --diff-filter=MA --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | Select-String -Pattern ".sql"
 }
 else {
