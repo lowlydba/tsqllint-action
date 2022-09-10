@@ -12,14 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
 
-      - name: Pass linting
+      - name: Pass
         uses: ./
         with:
           path: "./tests/pass.sql"
           comment: true
           only_changed_files: false
 
-      - name: Fail linting
+      - name: Fail
         uses: ./
         with:
           path: "./tests/error.sql"
@@ -28,7 +28,7 @@ jobs:
         continue-on-error: true
 
       - name: Assert lint fail
-        if: failure()
+        if: steps.Fail.outcome=='failure'
         run: exit 0
         shell: pwsh
         continue-on-error: true
