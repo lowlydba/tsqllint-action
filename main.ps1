@@ -14,15 +14,20 @@ if ($Config) {
 $configCommand = $baseCommand + " -p"
 $versionCommand = "tsqllint -v"
 
+
+
 # Show config
 $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
-Write-Host $ConfigSetting
+Write-Host "==================================="
+Write-Host ":star: TSQLLint Action :star:"
+Write-Host $ConfigSetting -ForegroundColor Blue
 
 # Show version
 $versionSetting = Invoke-Expression -Command $versionCommand
 $versionSetting = $versionSetting | Select-Object -Last 1
-Write-Host $versionSetting
+Write-Host $versionSetting -ForegroundColor Blue
+Write-Host "==================================="
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_READ_REF -ne "" ) {
