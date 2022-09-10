@@ -44,7 +44,7 @@ runs:
       with:
         path: .tsqllint-output.final
 
-    # - name: Exit
-    #   if: contains(env.tsqllint_rc, 1)
-    #   run: exit 1
-    #   shell: pwsh
+    - name: Exit
+      if: contains(env.tsqllint_rc, 1)
+      run: exit 1
+      shell: pwsh

@@ -12,9 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
 
-      - name: Run the action
+      - name: Pass linting
         uses: ./
         with:
-          path: "."
+          path: "./tests/pass.sql"
           comment: true
           only_changed_files: false
+
+      # - name: Fail linting
+      #   uses: ./
+      #   with:
+      #     path: "./tests/error.sql"
+      #     comment: true
+      #     only_changed_files: false
