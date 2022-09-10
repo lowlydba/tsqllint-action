@@ -15,11 +15,13 @@ if ($Config) {
 else {
     $ConfigSetting = tsqllint -p
 }
-Write-Host $ConfigSetting | Select-Object -Last 1
+$ConfigSetting = $ConfigSetting | Select-Object -Last 1
+Write-Host $ConfigSetting
 
 # Show version
 tsqllint -v | Select-Object -Last 1
 
+# Target changed files
 if ($OnlyChangedFiles -eq "true" -and $GITHUB_READ_REF -ne "" ) {
     $files = git diff --diff-filter=MA --name-only origin/$GITHUB_BASE_REF...origin/$GITHUB_HEAD_REF | Select-String -Pattern ".sql"
 }
