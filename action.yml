@@ -25,11 +25,12 @@ runs:
   steps:
     - name: Install TSQLLint
       run: |
-        yarn global add tsqllint > /dev/null 2>&1
-      shell: bash
+        npm i -g tsqllint | Out-Null
+      shell: pwsh
 
     - name: Run TSQLLint
       run: |
+<<<<<<< Updated upstream
         tsqllint -p -c "${{ inputs.config }}" | tail -1
         tsqllint -v | tail -1
         if [ "${{ inputs.only_changed_files }}" == "true" ] && [ "$GITHUB_HEAD_REF" != "" ]
@@ -43,21 +44,16 @@ runs:
         # Parse results
         cat .tsqllint-output
       shell: bash {0}
+=======
+        $params = @{
+          Config = "${{ inputs.config }}"
+          OnlyChangedFiles = "${{ inputs.only_changed_files }}"
+          Path = "${{ inputs.path }}"
+        }
+>>>>>>> Stashed changes
 
-    - name: Parse results
-      run: |
-        warnings=`cat .tsqllint-output | tail -1`
-        errors=`cat .tsqllint-output | tail -2 | head -1`
-        if [ $tsqllint_rc == 0 ];
-          then status=":white_check_mark:" && summary="No issues found.";
-          else status=":x:" && summary=`cat .tsqllint-output | tail -4`;
-        fi
-        # Build comment
-        echo -e "## $status TSQLLint Summary\n" >> .tsqllint-output.final
-        echo -e "$summary" >> .tsqllint-output.final
-        echo -e "\n[Detailed results.]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" >> .tsqllint-output.final
-        echo -e "\n:recycle: This comment has been updated with latest results." >> .tsqllint-output.final
-      shell: bash
+        ${{ github.action_path }}/main.ps1 @params
+      shell: pwsh
 
     - name: Post as comment
       if: contains(inputs.comment, 'true') && github.event.number != 0
@@ -65,7 +61,7 @@ runs:
       with:
         path: .tsqllint-output.final
 
-    - name: Set final status
+    - name: Exit
       if: contains(env.tsqllint_rc, 1)
       run: exit 1
-      shell: bash
+      shell: pwsh

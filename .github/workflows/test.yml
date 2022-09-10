@@ -1,0 +1,20 @@
+on: [push]
+
+jobs:
+  test-everywhere:
+    name: Test Action on all platforms and versions
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Run the action
+        uses: ./
+        with:
+          path: "tests/pass.sql"
+          comment: true
+          only_changed_files: false
