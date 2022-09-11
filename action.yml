@@ -16,7 +16,7 @@ inputs:
     description: "Create comment with summary of linter results."
     required: false
     default: "false"
-  only_changed_files:
+  only-changed-files:
     description: "Only lint on modified `.sql` files. Will ignore `path` if `true` in pull requests, or default back to `path` if not in a pull request."
     required: false
     default: "false"
@@ -32,7 +32,7 @@ runs:
       run: |
         $params = @{
           Config = "${{ inputs.config }}"
-          OnlyChangedFiles = "${{ inputs.only_changed_files }}"
+          OnlyChangedFiles = "${{ inputs.only-changed-files }}"
           Path = "${{ inputs.path }}"
         }
         ${{ github.action_path }}/main.ps1 @params
