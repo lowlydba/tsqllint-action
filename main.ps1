@@ -21,12 +21,12 @@ $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Host "==================================="
 Write-Host "⭐ TSQLLint Action ⭐"
-Write-Host "ℹ️ $ConfigSetting"
+Write-Host "💁 $ConfigSetting"
 
 # Show version
 $versionSetting = Invoke-Expression -Command $versionCommand
 $versionSetting = $versionSetting | Select-Object -Last 1
-Write-Host "ℹ️ Version: $versionSetting"
+Write-Host "💁 Version: $versionSetting"
 Write-Host "==================================="
 
 # Target changed files
