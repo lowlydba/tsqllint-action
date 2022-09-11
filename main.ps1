@@ -4,6 +4,7 @@ param(
     [string]$OnlyChangedFiles,
     [string]$Path
 )
+$files = $Path
 $commentFile = ".tsqllint-output.final"
 $status = ":white_check_mark:"
 $summary = "No issues found."
@@ -13,8 +14,6 @@ if ($Config) {
 }
 $configCommand = $baseCommand + " -p"
 $versionCommand = "tsqllint -v"
-
-
 
 # Show config
 $ConfigSetting = Invoke-Expression -Command $configCommand
@@ -31,10 +30,12 @@ Write-Host "==================================="
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
-    $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql"
-}
-else {
-    $files = $Path
+    if ($env:GITHUB_HEAD_REF) {
+        $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql"
+    }
+    else {
+        Write-Host "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
+    }
 }
 
 # Quote filenames
