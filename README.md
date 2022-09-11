@@ -19,6 +19,11 @@ for the linter.
 
 **Optional** - Create comment with summary of linter results.
 
+### `only-changed-files`
+
+**Optional** - If run in a pull request, only lint Modified or Added `.sql` files.
+Default is `false`.
+
 ## Examples
 
 ```yml
