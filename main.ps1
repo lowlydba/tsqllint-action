@@ -21,16 +21,16 @@ $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Host "==================================="
 Write-Host "⭐ TSQLLint Action ⭐"
-Write-Host $ConfigSetting
+Write-Host "ℹ️ $ConfigSetting"
 
 # Show version
 $versionSetting = Invoke-Expression -Command $versionCommand
 $versionSetting = $versionSetting | Select-Object -Last 1
-Write-Host $versionSetting
+Write-Host "ℹ️ Version: $versionSetting"
 Write-Host "==================================="
 
 # Target changed files
-if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_READ_REF -ne "" ) {
+if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
     $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql"
 }
 else {
