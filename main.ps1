@@ -39,6 +39,7 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 }
 
 # Quote filenames
+$files = $files | Out-String
 $files = $('"' + $files.Replace(' ', '" "') + '"')
 
 if ($Config) {
