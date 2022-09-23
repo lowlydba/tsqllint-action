@@ -39,7 +39,7 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 }
 
 # Quote filenames
-$files = $('"' + $files.Replace(' ', '" "') + '"')
+$files = $('"' + ($files -join '" "') + '"')
 
 if ($Config) {
     tsqllint $files -c $Config | Out-File .tsqllint-output
