@@ -41,11 +41,16 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 # Lint
 $lintFiles = $files -Split("\n")
 
-if ($Config) {
-    tsqllint $files -c $Config | Out-File .tsqllint-output
+try {
+    if ($Config) {
+        tsqllint $files -c $Config | Out-File .tsqllint-output
+    }
+    else {
+        tsqllint $files | Out-File .tsqllint-output
+    }
 }
-else {
-    tsqllint $files | Out-File .tsqllint-output
+catch {
+    "Do nothing" | Out-Null
 }
 
 $tsqllint_rc = $LASTEXITCODE
@@ -65,3 +70,5 @@ if ($tsqllint_rc -eq 1) {
 "`n$summary" | Out-File $commentFile -Append
 "`n[Detailed results.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
+
+exit 0
