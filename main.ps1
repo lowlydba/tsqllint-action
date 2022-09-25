@@ -6,8 +6,7 @@ param(
 )
 $files = $Path
 $commentFile = ".tsqllint-output.final"
-$status = ":white_check_mark:"
-$summary = "No issues found."
+$statusIcon = ":white_check_mark:"
 $baseCommand = "tsqllint"
 if ($Config) {
     $baseCommand = $baseCommand + " -c $Config"
@@ -59,14 +58,22 @@ $tsqllint_rc = $LASTEXITCODE
 # Results
 Get-Content -Path .tsqllint-output
 $fullSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
+$warningSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 1
+$errorSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 2 | Select-Object -First 1
+$numWarnings = $warningSummary.Split(" ")[0]
+$numErrors = $errorSummary.Split(" ")[0]
 
-if ($tsqllint_rc -eq 1) {
-    $status = ":x:"
-    $summary = $fullSummary
+if ($numErrors -gt 0) {
+    $statusIcon = ":x:"
+}
+elseif ($numWarnings -gt 0) {
+    $statusIcon = ":warning:"
 }
 
+$summary = $fullSummary
+
 # Build comment
-"## $status TSQLLint Summary" | Out-File $commentFile
+"## $statusIcon TSQLLint Summary" | Out-File $commentFile
 "`n$summary" | Out-File $commentFile -Append
 "`n[Detailed results.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
