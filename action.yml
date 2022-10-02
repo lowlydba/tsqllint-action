@@ -42,7 +42,7 @@ runs:
       if: contains(inputs.comment, 'true')
       uses: marocchino/sticky-pull-request-comment@v2
       with:
-        path: .tsqllint-output.final
+        path: ${{ format('{0}/.tsqllint-output.final', env.RUNNER_TEMP) }}
 
     - name: Exit
       if: contains(env.tsqllint_rc, 1)

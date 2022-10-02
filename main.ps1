@@ -5,7 +5,7 @@ param(
     [string]$Path
 )
 $files = $Path
-$commentFile = ".tsqllint-output.final"
+$commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
 $statusIcon = ":white_check_mark:"
 $baseCommand = "tsqllint"
 if ($Config) {
