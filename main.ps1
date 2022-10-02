@@ -6,6 +6,7 @@ param(
 )
 $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
+"COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
 $statusIcon = ":white_check_mark:"
 $baseCommand = "tsqllint"
 if ($Config) {
