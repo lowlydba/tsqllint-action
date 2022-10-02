@@ -30,7 +30,7 @@ Write-Host "==================================="
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
     if ($env:GITHUB_HEAD_REF) {
-        $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql"
+        $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
     }
     else {
         Write-Host "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
