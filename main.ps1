@@ -41,6 +41,7 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 # Lint
 if ($files -eq $null) {
     Write-Host "No modified or added files detected for linting."
+    "tsqllint_skip_comment=true" >> $env:GITHUB_ENV
     exit 0
 }
 
