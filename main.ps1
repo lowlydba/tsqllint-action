@@ -39,7 +39,10 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 }
 
 # Lint
-$lintFiles = $files -Split("\n")
+if ($files -eq $null) {
+    Write-Host "No modified or added files detected for linting."
+    exit 0
+}
 
 try {
     if ($Config) {
