@@ -5,23 +5,23 @@ on:
       - main
 
 jobs:
-  # pass:
-  #   name: Test Pass
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [ubuntu-latest, windows-latest, macOS-latest]
+  pass:
+    name: Test Pass
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
-  #   steps:
-  #     - uses: actions/checkout@v3.1.0
+    steps:
+      - uses: actions/checkout@v3.1.0
 
-  #     - name: Pass
-  #       uses: ./
-  #       with:
-  #         path: "./tests/pass.sql"
-  #         comment: true
-  #         only-changed-files: false
+      - name: Pass
+        uses: ./
+        with:
+          path: "./tests/pass.sql"
+          comment: true
+          only-changed-files: false
 
   fail:
     name: Test Fail
