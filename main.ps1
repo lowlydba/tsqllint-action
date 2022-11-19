@@ -82,7 +82,7 @@ if ($numErrors -gt 0 -or $numWarnings -gt 0) {
         $err = ($tableArray[1].Split())[1]
         $rule = ($tableArray[1].Split())[2]
         $msg = $tableArray[2]
-        $table += "| $err | $rule | $location | $msg |" + "`n"
+        $table += "| $err | [$rule](https://github.com/tsqllint/tsqllint/blob/main/documentation/rules/$rule.md) | $location | $msg |" + "`n"
     }
 
     if ($numErrors -gt 0) {
@@ -101,7 +101,7 @@ if ($table) {
     "`n$table" | Out-File $commentFile -Append
     "`n</details>" | Out-File $commentFile -Append
 }
-"`n[See log]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
+"`n[See full log.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
 exit 0
