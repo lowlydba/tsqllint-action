@@ -73,8 +73,7 @@ $numWarnings = $warningSummary.Split(" ")[0]
 $numErrors = $errorSummary.Split(" ")[0]
 $summary = $fullSummary
 if ($numErrors -gt 0 -or $numWarnings -gt 0) {
-
-    $errorList = Get-Content -Path .tsqllint-output | Select-Object -Skip 1 | Select-Object -First ($x.Count - 6)
+    $errorList = Get-Content -Path .tsqllint-output | Select-Object -Skip 1 | Select-Object -First ((Get-Content -Path .tsqllint-output).Count - 6)
     $table = "| Type | Rule | Location | Message |" + "`n"
     $table += "| ---- | ---- | -------- | ------- |" + "`n"
     foreach ($line in $errorList) {
