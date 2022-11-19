@@ -49,7 +49,7 @@ if ($null -eq $files) {
 }
 
 try {
-    if ($Config) {
+    if (Test-Path -Path $Config) {
         tsqllint $files -c $Config | Out-File .tsqllint-output
     }
     else {
