@@ -9,20 +9,15 @@ $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.fin
 "COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
 $statusIcon = ":white_check_mark:"
 $baseCommand = "tsqllint"
+$configCommand = $baseCommand + " --init"
 if ($Config) {
     if (Test-Path -Path $Config) {
         $baseCommand = $baseCommand + " -c $Config"
-    }
-    else {
-        $baseCommand = $baseCommand + " --init"
+        $configCommand = $baseCommand + " -p"
     }
 }
-else {
-    Test-Path
-}
-$configCommand = $baseCommand + " -p"
-$versionCommand = "tsqllint -v"
 
+$versionCommand = "tsqllint -v"
 # Show config
 $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
