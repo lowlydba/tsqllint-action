@@ -99,7 +99,7 @@ if ($table) {
     "`n$table" | Out-File $commentFile -Append
     "`n</details>" | Out-File $commentFile -Append
 }
-"`n[Detailed results.]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
+"`n[See log]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)" | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
 
 exit 0
