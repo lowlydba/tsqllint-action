@@ -21,7 +21,7 @@ jobs:
         with:
           path: "./tests/pass.sql"
           comment: true
-          only_changed_files: false
+          only-changed-files: false
 
   fail:
     name: Test Fail
@@ -39,5 +39,5 @@ jobs:
         with:
           path: "./tests/error.sql"
           comment: true
-          only_changed_files: false
+          only-changed-files: false
         continue-on-error: true
