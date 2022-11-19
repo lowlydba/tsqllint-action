@@ -10,7 +10,15 @@ $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.fin
 $statusIcon = ":white_check_mark:"
 $baseCommand = "tsqllint"
 if ($Config) {
-    $baseCommand = $baseCommand + " -c $Config"
+    if (Test-Path -Path $Config) {
+        $baseCommand = $baseCommand + " -c $Config"
+    }
+    else {
+        $baseCommand = $baseCommand + " --init"
+    }
+}
+else {
+    Test-Path
 }
 $configCommand = $baseCommand + " -p"
 $versionCommand = "tsqllint -v"
