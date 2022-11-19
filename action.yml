@@ -12,6 +12,7 @@ inputs:
   config:
     description: "Path to a configuration file for the linter."
     required: false
+    default: ".github/linters/.tsqllintrc"
   comment:
     description: "Create comment with summary of linter results."
     required: false

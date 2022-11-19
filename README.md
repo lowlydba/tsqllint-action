@@ -14,6 +14,7 @@ Default is `*.sql`.
 
 **Optional** - Path to a [configuration file](https://github.com/tsqllint/tsqllint#configuration)
 for the linter.
+Default is `.github/linters/.tsqllintrc`
 
 ### `comment`
 
