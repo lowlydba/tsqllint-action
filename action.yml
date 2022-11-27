@@ -41,7 +41,7 @@ runs:
 
     - name: Post as comment
       if: ${{ contains(inputs.comment, 'true') && env.tsqllint_skip_comment != 'true' }}
-      uses: marocchino/sticky-pull-request-comment@v2.3.0
+      uses: marocchino/sticky-pull-request-comment@v2.3.1
       with:
         path: ${{ env.COMMENT_FILE }}
 
