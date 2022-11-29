@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter()]
     [string]$Config,
     [string]$OnlyChangedFiles,
