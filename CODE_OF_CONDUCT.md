@@ -31,7 +31,7 @@ Examples of unacceptable behavior include:
   advances of any kind
 * Trolling, insulting or derogatory comments, and personal or political attacks
 * Public or private harassment
-* Publishing others' private information, such as a physical or email
+* Publishing others' private information, such as a physical or e-mail
   address, without their explicit permission
 * Other conduct which could reasonably be considered inappropriate in a
   professional setting
@@ -123,6 +123,5 @@ enforcement ladder](https://github.com/mozilla/diversity).
 
 [homepage]: https://www.contributor-covenant.org
 
-For answers to common questions about this code of conduct, see the FAQ at
-https://www.contributor-covenant.org/faq. Translations are available at
-https://www.contributor-covenant.org/translations.
+For answers to common questions about this code of conduct, 
+see the [FAQ](https://www.contributor-covenant.org/faq).
