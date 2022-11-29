@@ -21,4 +21,5 @@ jobs:
         uses: github/super-linter@v4.9.7
         with:
           VALIDATE_SQLFLUFF: false
+          VALIDATE_SQL: false
           VALIDATE_JSCPD_ALL_CODEBASE: false
