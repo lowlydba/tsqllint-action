@@ -19,7 +19,7 @@ jobs:
           
       - name: Super-Linter
         uses: github/super-linter@v4.9.7
-        with:
+        env:
           VALIDATE_SQLFLUFF: false
           VALIDATE_SQL: false
           VALIDATE_JSCPD_ALL_CODEBASE: false
