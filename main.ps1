@@ -17,7 +17,7 @@ if ($Config) {
     }
 }
 
-$versionCommand = "tsqllint -v"
+
 # Show config
 $ConfigSetting = Invoke-Expression -Command $configCommand
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
@@ -26,7 +26,8 @@ Write-Output "⭐ TSQLLint Action ⭐"
 Write-Output "💁 $ConfigSetting"
 
 # Show version
-$versionSetting = Invoke-Expression -Command $versionCommand
+$versionParams = @("-v")
+$versionSetting = & "tsqllint" @versionParams
 $versionSetting = $versionSetting | Select-Object -Last 1
 Write-Output "💁 TSQLLint Version: $versionSetting"
 Write-Output "==================================="
