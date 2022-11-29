@@ -10,5 +10,11 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
+      - name: Check out code
+        uses: actions/checkout@v3.1.0
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          
       - name: Super-Linter
         uses: github/super-linter@v4.9.7
