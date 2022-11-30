@@ -1,3 +1,4 @@
+---
 name: "TSQLLint Action"
 author: "lowlydba"
 description: "Lint T-SQL files using TSQLLint"

@@ -1,3 +1,4 @@
+---
 name: Test Pass/Fail
 on:
   pull_request:

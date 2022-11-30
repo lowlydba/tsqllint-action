@@ -1,4 +1,4 @@
-# TSQLLint Github Action
+# TSQLLint GitHub Action
 
 This action runs the latest [TSQLLint](https://github.com/tsqllint/tsqllint).
 

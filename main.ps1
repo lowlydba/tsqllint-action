@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter()]
     [string]$Config,
     [string]$OnlyChangedFiles,
@@ -8,28 +8,28 @@ $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
 "COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
 $statusIcon = ":white_check_mark:"
-$baseCommand = "tsqllint"
-$configCommand = $baseCommand + " --init"
+$configParams = @(
+    "--init"
+)
 if ($Config) {
     if (Test-Path -Path $Config) {
-        $baseCommand = $baseCommand + " -c $Config"
-        $configCommand = $baseCommand + " -p"
+        $configParams = @("-p")
     }
 }
 
-$versionCommand = "tsqllint -v"
 # Show config
-$ConfigSetting = Invoke-Expression -Command $configCommand
+$ConfigSetting = & "tsqllint" @configParams
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
-Write-Host "==================================="
-Write-Host "⭐ TSQLLint Action ⭐"
-Write-Host "💁 $ConfigSetting"
+Write-Output "==================================="
+Write-Output "⭐ TSQLLint Action ⭐"
+Write-Output "💁 $ConfigSetting"
 
 # Show version
-$versionSetting = Invoke-Expression -Command $versionCommand
+$versionParams = @("-v")
+$versionSetting = & "tsqllint" @versionParams
 $versionSetting = $versionSetting | Select-Object -Last 1
-Write-Host "💁 TSQLLint Version: $versionSetting"
-Write-Host "==================================="
+Write-Output "💁 TSQLLint Version: $versionSetting"
+Write-Output "==================================="
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
@@ -37,13 +37,13 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
         $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
     }
     else {
-        Write-Host "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
+        Write-Output "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
     }
 }
 
 # Lint
 if ($null -eq $files) {
-    Write-Host "No modified or added files detected for linting."
+    Write-Output "No modified or added files detected for linting."
     "tsqllint_skip_comment=true" >> $env:GITHUB_ENV
     exit 0
 }
