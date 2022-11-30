@@ -8,18 +8,17 @@ $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
 "COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
 $statusIcon = ":white_check_mark:"
-$baseCommand = "tsqllint"
-$configCommand = $baseCommand + " --init"
+$configParams = @(
+    "--init"
+)
 if ($Config) {
     if (Test-Path -Path $Config) {
-        $baseCommand = $baseCommand + " -c $Config"
-        $configCommand = $baseCommand + " -p"
+        $configParams = @("-p")
     }
 }
 
-
 # Show config
-$ConfigSetting = Invoke-Expression -Command $configCommand
+$ConfigSetting = & "tsqllint" @configParams
 $ConfigSetting = $ConfigSetting | Select-Object -Last 1
 Write-Output "==================================="
 Write-Output "⭐ TSQLLint Action ⭐"
