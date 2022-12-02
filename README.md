@@ -2,7 +2,7 @@
 
 [![Lint](https://github.com/lowlydba/tsqllint-action/actions/workflows/lint.yml/badge.svg)](https://github.com/lowlydba/tsqllint-action/actions/workflows/lint.yml)
 
-This action runs the latest [TSQLLint](https://github.com/tsqllint/tsqllint), the same directory that Github SuperLinter uses.
+This action runs the latest [TSQLLint](https://github.com/tsqllint/tsqllint).
 
 ## Inputs
 
