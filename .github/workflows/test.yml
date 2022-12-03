@@ -17,13 +17,16 @@ concurrency:
 jobs:
   clear-comments:
     name: Clear Previous Comment
-    uses: marocchino/sticky-pull-request-comment@v2.3.1
-    with:
-      header: tsqllint-action
-      delete: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marocchino/sticky-pull-request-comment@v2.3.1
+        with:
+          header: tsqllint-action
+          delete: true
 
   pass:
     name: Test Pass
+    needs: [clear-comments]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -42,6 +45,7 @@ jobs:
 
   fail:
     name: Test Fail
+    needs: [clear-comments]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
