@@ -51,5 +51,5 @@ jobs:
           only-changed-files: false
 
       - name: Error if fail didn't fail
-        if: ${{ always() }} && ${{ steps.test-fail.conclusion }} != "failure"
-        run: exit 1
+        if: ${{ always() }} && ${{ failure() }}
+        run: exit 0
