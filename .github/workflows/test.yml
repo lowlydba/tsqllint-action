@@ -8,6 +8,10 @@ on:
 env:
   STICKY_APPEND: true
 
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   pass:
     name: Test Pass
