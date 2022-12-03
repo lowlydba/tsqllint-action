@@ -28,9 +28,14 @@ Default is `false`.
 **Optional** - If run in a pull request, only lint Modified or Added files.
 Default is `false`.
 
-### `append`
+### `append-comment`
 
 **Optional** - Append results from multiple runs in a single comment if `comment` is also `true`.
+Default is `false`.
+
+### `summary`
+
+**Optional** - Add linter results to the job summary.
 Default is `false`.
 
 ## Examples

@@ -39,6 +39,7 @@ jobs:
           comment: true
           only-changed-files: false
           append: true
+          summary: true
 
   fail:
     name: Test Fail

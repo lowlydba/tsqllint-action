@@ -6,7 +6,7 @@
 )
 $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
-"COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
+
 $statusIcon = ":white_check_mark:"
 $configParams = @(
     "--init"
@@ -44,7 +44,7 @@ if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
 # Lint
 if ($null -eq $files) {
     Write-Output "No modified or added files detected for linting."
-    "tsqllint_skip_comment=true" >> $env:GITHUB_ENV
+    "no_results=true" >> $env:GITHUB_ENV
     exit 0
 }
 
@@ -103,5 +103,7 @@ if ($table) {
 }
 "`n:page_facing_up: Full [job results]($env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID)." | Out-File $commentFile -Append
 "`n:recycle: This comment has been updated with latest results." | Out-File $commentFile -Append
+
+"COMMENT_FILE=$commentFile" >> $env:GITHUB_ENV
 
 exit 0
