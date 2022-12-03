@@ -45,7 +45,6 @@ jobs:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
-        continue-on-error: true
 
       - name: Error if fail didn't fail
         if: ${{ always() }} && ${{ steps.test-fail.conclusion }} != "failure"
