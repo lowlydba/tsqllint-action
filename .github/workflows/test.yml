@@ -7,8 +7,8 @@ on:
       - main
 
 # Append all lint test results
-env:
-  STICKY_APPEND: true
+#env:
+#  STICKY_APPEND: true
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
