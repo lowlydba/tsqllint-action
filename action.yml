@@ -50,7 +50,7 @@ runs:
       shell: pwsh
 
     - name: Post comment
-      if: ${{ inputs.comment) == 'true' && env.no_results != 'true' }}
+      if: ${{ inputs.comment == 'true' && env.no_results != 'true' }}
       uses: marocchino/sticky-pull-request-comment@v2.3.1
       with:
         path: ${{ env.COMMENT_FILE }}
