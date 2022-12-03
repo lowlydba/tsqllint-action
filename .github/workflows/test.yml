@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+
+# Append all lint test results
 env:
   STICKY_APPEND: true
 
@@ -13,6 +15,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  clear-comments:
+    name: Clear Previous Comment
+    uses: marocchino/sticky-pull-request-comment@v2.3.1
+    with:
+      header: tsqllint-action
+      delete: true
+
   pass:
     name: Test Pass
     runs-on: ${{ matrix.os }}

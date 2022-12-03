@@ -46,6 +46,7 @@ runs:
       with:
         path: ${{ env.COMMENT_FILE }}
         append: ${{ env.STICKY_APPEND }} # Used for testing only
+        header: tsqllint-action
 
     - name: Exit
       if: contains(env.tsqllint_rc, 1)
