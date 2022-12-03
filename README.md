@@ -1,6 +1,7 @@
 # TSQLLint GitHub Action
 
 [![Lint](https://github.com/lowlydba/tsqllint-action/actions/workflows/lint.yml/badge.svg)](https://github.com/lowlydba/tsqllint-action/actions/workflows/lint.yml)
+[![Integration Tests](https://github.com/lowlydba/tsqllint-action/actions/workflows/test.yml/badge.svg)](https://github.com/lowlydba/tsqllint-action/actions/workflows/test.yml)
 
 This action runs the latest [TSQLLint](https://github.com/tsqllint/tsqllint).
 
