@@ -48,5 +48,5 @@ jobs:
         continue-on-error: true
 
       - name: Error if fail didn't fail
-        if: steps.test-fail.conclusion != "failure"
+        if: ${{ steps.test-fail.conclusion }} != "failure"
         run: exit 1
