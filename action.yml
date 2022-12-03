@@ -22,6 +22,11 @@ inputs:
     description: "Only lint on modified `.sql` files. Will ignore `path` if `true` in pull requests, or default back to `path` if not in a pull request."
     required: false
     default: "false"
+  append:
+    description: "Append results from multiple runs in a single comment."
+    required: false
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -45,7 +50,7 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2.3.1
       with:
         path: ${{ env.COMMENT_FILE }}
-        append: ${{ env.STICKY_APPEND }} # Used for testing only
+        append: ${{ inputs.append }}
         header: tsqllint-action
 
     - name: Exit

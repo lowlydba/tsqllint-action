@@ -6,10 +6,6 @@ on:
     branches:
       - main
 
-# Append all lint test results
-#env:
-#  STICKY_APPEND: true
-
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -42,6 +38,7 @@ jobs:
           path: "./tests/pass.sql"
           comment: true
           only-changed-files: false
+          append: true
 
   fail:
     name: Test Fail
@@ -58,11 +55,12 @@ jobs:
       - name: Fail
         uses: ./
         id: test-fail
+        continue-on-error: true
         with:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
-        continue-on-error: true
+          append: true
 
       - name: Pass if fail tests failed
         if: ${{ always() }} && ${{ failure() }}

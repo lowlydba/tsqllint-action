@@ -21,10 +21,16 @@ Default is `.github/linters/.tsqllintrc`
 ### `comment`
 
 **Optional** - Create comment with summary of linter results.
+Default is `false`.
 
 ### `only-changed-files`
 
 **Optional** - If run in a pull request, only lint Modified or Added `.sql` files.
+Default is `false`.
+
+### `append`
+
+**Optional** - Append results from multiple runs in a single comment if `comment` is also true.
 Default is `false`.
 
 ## Examples
