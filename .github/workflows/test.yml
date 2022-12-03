@@ -49,7 +49,8 @@ jobs:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
+        continue-on-error: true
 
-      - name: Error if fail didn't fail
+      - name: Pass if fail tests failed
         if: ${{ always() }} && ${{ failure() }}
         run: exit 0
