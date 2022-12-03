@@ -38,7 +38,7 @@ jobs:
           path: "./tests/pass.sql"
           comment: true
           only-changed-files: false
-          append: true
+          append-comment: true
           summary: true
 
   fail:
@@ -61,7 +61,8 @@ jobs:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
-          append: true
+          append-comment: true
+          summary: true
 
       - name: Pass if fail tests failed
         if: ${{ always() }} && ${{ failure() }}
