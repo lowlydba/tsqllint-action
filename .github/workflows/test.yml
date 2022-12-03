@@ -45,7 +45,7 @@ jobs:
 
   fail:
     name: Test Fail
-    needs: [clear-comments]
+    needs: [pass]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
