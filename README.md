@@ -25,12 +25,12 @@ Default is `false`.
 
 ### `only-changed-files`
 
-**Optional** - If run in a pull request, only lint Modified or Added `.sql` files.
+**Optional** - If run in a pull request, only lint Modified or Added files.
 Default is `false`.
 
 ### `append`
 
-**Optional** - Append results from multiple runs in a single comment if `comment` is also true.
+**Optional** - Append results from multiple runs in a single comment if `comment` is also `true`.
 Default is `false`.
 
 ## Examples
@@ -55,4 +55,7 @@ jobs:
 
 ## Notes
 
-* For pull request comments to work, the job must be triggered by a pull request event type
+* If using `append`, running [marocchino/sticky-pull-request-comment][sticky-pull-request] first with the `delete` parameter may be required.
+See the test workflow as an example.
+
+[sticky-pull-request]: https://github.com/marocchino/sticky-pull-request-comment
