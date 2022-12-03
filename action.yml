@@ -45,6 +45,7 @@ runs:
       uses: marocchino/sticky-pull-request-comment@v2.3.1
       with:
         path: ${{ env.COMMENT_FILE }}
+        append: ${{ env.STICKY_APPEND }} # Used for testing only
 
     - name: Exit
       if: contains(env.tsqllint_rc, 1)

@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+env:
+  STICKY_APPEND: true
 
 jobs:
   pass:
@@ -38,8 +40,13 @@ jobs:
 
       - name: Fail
         uses: ./
+        id: test-fail
         with:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
         continue-on-error: true
+
+      - name: Error if fail didn't fail
+        if: steps.test-fail.conclusion != "failure"
+        run: exit 1
