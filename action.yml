@@ -22,6 +22,15 @@ inputs:
     description: "Only lint on modified `.sql` files. Will ignore `path` if `true` in pull requests, or default back to `path` if not in a pull request."
     required: false
     default: "false"
+  append-comment:
+    description: "Append results from multiple runs in a single comment."
+    required: false
+    default: "false"
+  summary:
+    description: "Add linter results to the job summary."
+    required: false
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -40,11 +49,19 @@ runs:
         ${{ github.action_path }}/main.ps1 @params
       shell: pwsh
 
-    - name: Post as comment
-      if: ${{ contains(inputs.comment, 'true') && env.tsqllint_skip_comment != 'true' }}
+    - name: Post comment
+      if: ${{ inputs.comment == 'true' && env.no_results != 'true' }}
       uses: marocchino/sticky-pull-request-comment@v2.3.1
       with:
         path: ${{ env.COMMENT_FILE }}
+        append: ${{ inputs.append-comment }}
+        header: tsqllint-action
+
+    - name: Post Job summary
+      if: ${{ inputs.summary == 'true' && env.no_results != 'true' }}
+      run: |
+        Get-Content -Path ${{ env.COMMENT_FILE }} >> $env:GITHUB_STEP_SUMMARY
+      shell: pwsh
 
     - name: Exit
       if: contains(env.tsqllint_rc, 1)

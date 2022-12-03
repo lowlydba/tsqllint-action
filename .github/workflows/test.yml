@@ -6,9 +6,23 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
+  clear-comments:
+    name: Clear Previous Comment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marocchino/sticky-pull-request-comment@v2.3.1
+        with:
+          header: tsqllint-action
+          delete: true
+
   pass:
     name: Test Pass
+    needs: [clear-comments]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -24,9 +38,12 @@ jobs:
           path: "./tests/pass.sql"
           comment: true
           only-changed-files: false
+          append-comment: true
+          summary: true
 
   fail:
     name: Test Fail
+    needs: [pass]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -38,8 +55,15 @@ jobs:
 
       - name: Fail
         uses: ./
+        id: test-fail
+        continue-on-error: true
         with:
           path: "./tests/error.sql"
           comment: true
           only-changed-files: false
-        continue-on-error: true
+          append-comment: true
+          summary: true
+
+      - name: Pass if fail tests failed
+        if: ${{ always() }} && ${{ failure() }}
+        run: exit 0
