@@ -32,7 +32,7 @@ Write-Output "💁 TSQLLint Version: $versionSetting"
 Write-Output "==================================="
 
 # Target changed files
-if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
+if ($OnlyChangedFiles -eq "true") {
     if ($env:GITHUB_HEAD_REF) {
         $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
     }
