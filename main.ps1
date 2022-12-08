@@ -18,8 +18,12 @@ if ($Config) {
 }
 
 # Show config
-$ConfigSetting = & "tsqllint" @configParams
-$ConfigSetting = $ConfigSetting | Select-Object -Last 1
+$configOutput = & "tsqllint" @configParams
+if ($configOutput -like "*Config file not found*") {
+    $ConfigNotFound = $configOutput | Select-Object -First 2 | Select-Object -Last 1
+    Write-Warning -Message $ConfigNotFound
+}
+$ConfigSetting = $configOutput | Select-Object -Last 1
 Write-Output "==================================="
 Write-Output "⭐ TSQLLint Action ⭐"
 Write-Output "💁 $ConfigSetting"
@@ -37,7 +41,7 @@ if ($OnlyChangedFiles -eq "true") {
         $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
     }
     else {
-        Write-Output "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
+        Write-Warning -Message "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
     }
 }
 
