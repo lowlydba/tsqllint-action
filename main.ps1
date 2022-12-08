@@ -38,12 +38,7 @@ Write-Output "==================================="
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true") {
-    if ($env:GITHUB_HEAD_REF) {
-        $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern ".sql" -SimpleMatch
-    }
-    else {
-        Write-Warning -Message "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
-    }
+    $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern ".sql" -SimpleMatch
 }
 
 # Lint
