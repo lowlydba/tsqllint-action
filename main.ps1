@@ -13,7 +13,7 @@ $configParams = @(
 )
 if ($Config) {
     if (Test-Path -Path $Config) {
-        $configParams = @("-p")
+        $configParams = @("-p", "-c", $Config)
     }
 }
 
@@ -64,16 +64,17 @@ $tsqllint_rc = $LASTEXITCODE
 "tsqllint_rc=$tsqllint_rc" >> $env:GITHUB_ENV
 
 # Results
-Get-Content -Path .tsqllint-output
+$outputContent = Get-Content -Path .tsqllint-output
+Write-Output -InputObject $outputContent
 
-$fullSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
-$warningSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 1
-$errorSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 2 | Select-Object -First 1
+$fullSummary = $outputContent | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
+$warningSummary = $outputContent | Select-Object -Last 1
+$errorSummary = $outputContent | Select-Object -Last 2 | Select-Object -First 1
 $numWarnings = $warningSummary.Split(" ")[0]
 $numErrors = $errorSummary.Split(" ")[0]
 $summary = $fullSummary
 if ($numErrors -gt 0 -or $numWarnings -gt 0) {
-    $errorList = Get-Content -Path .tsqllint-output | Select-Object -Skip 1 | Select-Object -First ((Get-Content -Path .tsqllint-output).Count - 6)
+    $errorList = $outputContent | Select-Object -Skip 1 | Select-Object -First ($outputContent.Count - 6)
     $table = "| Type | Rule | Location | Message |" + "`n"
     $table += "| ---- | ---- | -------- | ------- |" + "`n"
     foreach ($line in $errorList) {
