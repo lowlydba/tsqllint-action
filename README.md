@@ -39,6 +39,11 @@ Default is `false`.
 **Optional** - Add linter results to the job summary.
 Default is `false`.
 
+### `compare-branch`
+
+**Optional** - Branch to diff against when using `only-changed-files`.
+Default is `main`.
+
 ## Examples
 
 ```yml

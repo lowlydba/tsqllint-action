@@ -2,7 +2,8 @@
     [Parameter()]
     [string]$Config,
     [string]$OnlyChangedFiles,
-    [string]$Path
+    [string]$Path,
+    [string]$Branch
 )
 $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
@@ -38,7 +39,7 @@ Write-Output "==================================="
 # Target changed files
 if ($OnlyChangedFiles -eq "true") {
     if ($env:GITHUB_HEAD_REF) {
-        $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
+        $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern ".sql" -SimpleMatch
     }
     else {
         Write-Warning -Message "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
