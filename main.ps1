@@ -2,7 +2,8 @@
     [Parameter()]
     [string]$Config,
     [string]$OnlyChangedFiles,
-    [string]$Path
+    [string]$Path,
+    [string]$Branch
 )
 $files = $Path
 $commentFile = Join-Path -Path $env:RUNNER_TEMP -ChildPath ".tsqllint-output.final"
@@ -13,13 +14,17 @@ $configParams = @(
 )
 if ($Config) {
     if (Test-Path -Path $Config) {
-        $configParams = @("-p")
+        $configParams = @("-p", "-c", $Config)
     }
 }
 
 # Show config
-$ConfigSetting = & "tsqllint" @configParams
-$ConfigSetting = $ConfigSetting | Select-Object -Last 1
+$configOutput = & "tsqllint" @configParams
+if ($configOutput -like "*Config file not found*") {
+    $ConfigNotFound = $configOutput | Select-Object -First 2 | Select-Object -Last 1
+    Write-Warning -Message $ConfigNotFound
+}
+$ConfigSetting = $configOutput | Select-Object -Last 1
 Write-Output "==================================="
 Write-Output "⭐ TSQLLint Action ⭐"
 Write-Output "💁 $ConfigSetting"
@@ -32,13 +37,8 @@ Write-Output "💁 TSQLLint Version: $versionSetting"
 Write-Output "==================================="
 
 # Target changed files
-if ($OnlyChangedFiles -eq "true" -and $env:GITHUB_HEAD_REF) {
-    if ($env:GITHUB_HEAD_REF) {
-        $files = git diff --diff-filter=MA --name-only origin/$env:GITHUB_BASE_REF...origin/$env:GITHUB_HEAD_REF | Select-String -Pattern ".sql" -SimpleMatch
-    }
-    else {
-        Write-Output "No GITHUB_HEAD_REF detected for changed files, defaulting to path value."
-    }
+if ($OnlyChangedFiles -eq "true") {
+    $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern ".sql" -SimpleMatch
 }
 
 # Lint
@@ -64,16 +64,17 @@ $tsqllint_rc = $LASTEXITCODE
 "tsqllint_rc=$tsqllint_rc" >> $env:GITHUB_ENV
 
 # Results
-Get-Content -Path .tsqllint-output
+$outputContent = Get-Content -Path .tsqllint-output
+Write-Output -InputObject $outputContent
 
-$fullSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
-$warningSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 1
-$errorSummary = Get-Content -Path .tsqllint-output | Select-Object -Last 2 | Select-Object -First 1
+$fullSummary = $outputContent | Select-Object -Last 4 | ForEach-Object { $_ + "`n" }
+$warningSummary = $outputContent | Select-Object -Last 1
+$errorSummary = $outputContent | Select-Object -Last 2 | Select-Object -First 1
 $numWarnings = $warningSummary.Split(" ")[0]
 $numErrors = $errorSummary.Split(" ")[0]
 $summary = $fullSummary
 if ($numErrors -gt 0 -or $numWarnings -gt 0) {
-    $errorList = Get-Content -Path .tsqllint-output | Select-Object -Skip 1 | Select-Object -First ((Get-Content -Path .tsqllint-output).Count - 6)
+    $errorList = $outputContent | Select-Object -Skip 1 | Select-Object -First ($outputContent.Count - 6)
     $table = "| Type | Rule | Location | Message |" + "`n"
     $table += "| ---- | ---- | -------- | ------- |" + "`n"
     foreach ($line in $errorList) {

@@ -30,6 +30,10 @@ inputs:
     description: "Add linter results to the job summary."
     required: false
     default: "false"
+  compare-branch:
+    description: "Branch to diff against when using only-changed-files."
+    required: false
+    default: "main"
 
 runs:
   using: composite
@@ -45,6 +49,7 @@ runs:
           Config = "${{ inputs.config }}"
           OnlyChangedFiles = "${{ inputs.only-changed-files }}"
           Path = "${{ inputs.path }}"
+          Branch = "${{ inputs.compare-branch }}"
         }
         ${{ github.action_path }}/main.ps1 @params
       shell: pwsh
