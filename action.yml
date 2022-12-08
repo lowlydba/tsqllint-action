@@ -49,7 +49,7 @@ runs:
           Config = "${{ inputs.config }}"
           OnlyChangedFiles = "${{ inputs.only-changed-files }}"
           Path = "${{ inputs.path }}"
-          Branch = ${{ inputs.compare-branch }}
+          Branch = "${{ inputs.compare-branch }}"
         }
         ${{ github.action_path }}/main.ps1 @params
       shell: pwsh
