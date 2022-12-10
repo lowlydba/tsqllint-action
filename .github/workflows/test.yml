@@ -1,5 +1,5 @@
 ---
-name: Test Pass/Fail
+name: Integration Test
 on:
   pull_request:
   push:
@@ -90,7 +90,7 @@ jobs:
           only-changed-files: false
           append-comment: true
           summary: true
-          config: /tests/config/.warn-tsqllintrc
+          config: tests/config/.warn-tsqllintrc
 
       - name: Pass if warn tests failed
         if: ${{ always() }} && ${{ failure() }}
