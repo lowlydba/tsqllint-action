@@ -23,7 +23,7 @@
         "set-ansi": "warning",
         "set-nocount": "warning",
         "set-quoted-identifier": "warning",
-        "set-transaction-isolation-level": "warning",
+        "set-transaction-isolation-level": "error",
         "set-variable": "warning",
         "upper-lower": "warning",
         "unicode-string": "warning",
