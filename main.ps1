@@ -73,19 +73,36 @@ $errorSummary = $outputContent | Select-Object -Last 2 | Select-Object -First 1
 $numWarnings = $warningSummary.Split(" ")[0]
 $numErrors = $errorSummary.Split(" ")[0]
 $summary = $fullSummary
+[Hashtable[]]$outputHash = $null
+
 if ($numErrors -gt 0 -or $numWarnings -gt 0) {
-    $errorList = $outputContent | Select-Object -Skip 1 | Select-Object -First ($outputContent.Count - 6)
-    $table = "| Type | Rule | Location | Message |" + "`n"
-    $table += "| ---- | ---- | -------- | ------- |" + "`n"
-    foreach ($line in $errorList) {
-        $tableArray = $line.Split(":")
-        $location = $tableArray[0]
-        $err = ($tableArray[1].Split())[1]
-        $rule = ($tableArray[1].Split())[2]
-        $msg = $tableArray[2]
-        $table += "| $err | [$rule](https://github.com/tsqllint/tsqllint/blob/main/documentation/rules/$rule.md) | $location | $msg |" + "`n"
+    $lintList = $outputContent | Select-Object -Skip 1 | Select-Object -First ($outputContent.Count - 6)
+    # Put results into array
+    foreach ($line in $lintList) {
+        $lintArray = $line.Split(":")
+        $lintHash = @{
+            Location = $lintArray[0]
+            Type = ($lintArray[1].Split())[1]
+            Rule = ($lintArray[1].Split())[2]
+            Msg = $lintArray[2]
+        }
+        $outputHash += $lintHash
     }
 
+    # Create markdown table
+    $table = "| Type | Rule | Location | Message |" + "`n"
+    $table += "| ---- | ---- | -------- | ------- |" + "`n"
+
+    # Populate errors
+    foreach ($entry in ($outputHash | Where-Object Type -eq "error")) {
+        $table += "| :x: | [$($entry.Rule)](https://github.com/tsqllint/tsqllint/blob/main/documentation/rules/$($entry.Rule).md) | $($entry.Location) | $($entry.Msg) |" + "`n"
+    }
+    # Populate warnings
+    foreach ($entry in ($outputHash | Where-Object Type -eq "warning")) {
+        $table += "| :warning: | [$($entry.Rule)](https://github.com/tsqllint/tsqllint/blob/main/documentation/rules/$($entry.Rule).md) | $($entry.Location) | $($entry.Msg) |" + "`n"
+    }
+
+    # Choose rollup status icon
     if ($numErrors -gt 0) {
         $statusIcon = ":x:"
     }
