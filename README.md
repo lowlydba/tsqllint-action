@@ -64,6 +64,10 @@ jobs:
           comment: true
 ```
 
+## Visuals
+
+![image](https://user-images.githubusercontent.com/16843041/206877097-49905dce-1c7d-4699-8777-8fefc26802bb.png)
+
 ## Notes
 
 * If using `append`, running [marocchino/sticky-pull-request-comment][sticky-pull-request] first with the `delete` parameter may be required.
