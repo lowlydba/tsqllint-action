@@ -1,5 +1,5 @@
 ---
-name: Test Pass/Fail
+name: Integration Test
 on:
   pull_request:
   push:
@@ -65,5 +65,33 @@ jobs:
           summary: true
 
       - name: Pass if fail tests failed
+        if: ${{ always() }} && ${{ failure() }}
+        run: exit 0
+
+  warn:
+    name: Test Warn
+    needs: [fail]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - name: Warn
+        uses: ./
+        id: test-warn
+        continue-on-error: true
+        with:
+          path: "./tests/error.sql"
+          comment: true
+          only-changed-files: false
+          append-comment: true
+          summary: true
+          config: tests/config/.warn-tsqllintrc
+
+      - name: Pass if warn tests failed
         if: ${{ always() }} && ${{ failure() }}
         run: exit 0
