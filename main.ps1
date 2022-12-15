@@ -38,7 +38,7 @@ Write-Output "==================================="
 
 # Target changed files
 if ($OnlyChangedFiles -eq "true") {
-    $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern ".sql" -SimpleMatch
+    $files = git diff --diff-filter=MA --name-only origin/$Branch | Select-String -Pattern '^*.sql$'
 }
 
 # Lint
