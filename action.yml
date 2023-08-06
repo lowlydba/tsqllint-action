@@ -56,7 +56,7 @@ runs:
 
     - name: Post comment
       if: ${{ inputs.comment == 'true' && env.no_results != 'true' }}
-      uses: marocchino/sticky-pull-request-comment@v2.6.2
+      uses: marocchino/sticky-pull-request-comment@v2.7.0
       with:
         path: ${{ env.COMMENT_FILE }}
         append: ${{ inputs.append-comment }}
