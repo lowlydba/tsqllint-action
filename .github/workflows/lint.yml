@@ -18,7 +18,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           
       - name: Super-Linter
-        uses: github/super-linter@v6
+        uses: github/super-linter@v7
         env:
           VALIDATE_SQLFLUFF: false
           VALIDATE_SQL: false
